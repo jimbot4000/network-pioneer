@@ -1,6 +1,7 @@
 package com.networkpioneer;
 
 import java.io.IOException;
+import java.net.Inet4Address;
 import java.net.UnknownHostException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -12,6 +13,7 @@ import org.pcap4j.core.PcapNetworkInterface;
 import org.pcap4j.core.PcapNetworkInterface.PromiscuousMode;
 import org.pcap4j.packet.Packet;
 import org.pcap4j.util.NifSelector;
+import org.pcap4j.util.MacAddress;
 
 /**
  * Main
@@ -98,13 +100,28 @@ public class App
         };
 
         ListenerThread t = new ListenerThread(handle, listener);
-        pool.execute(t);
+        // pool.execute(t);
 
+
+        ProtocolICMP icmp = new ProtocolICMP();
+        Packet pkt;
         try {
-            new UDP("bbc.co.uk", PORT);
+            pkt = icmp.createPacket(
+                (MacAddress)iface.getLinkLayerAddresses().get(0), 
+                Inet4Address.getByName("192.168.0.20"), 
+                Inet4Address.getByName("example.com"), (byte)64);
+            
+                icmp.sendPkt(sendHandle, pkt);
+            
         } catch (UnknownHostException e) {
             e.printStackTrace();
         }
+
+        // try {
+        //     new UDP("bbc.co.uk", PORT);
+        // } catch (UnknownHostException e) {
+        //     e.printStackTrace();
+        // }
     }
 
 }
