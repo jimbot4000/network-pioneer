@@ -23,7 +23,7 @@ import org.pcap4j.packet.IpV4Rfc1349Tos;
 
 public class ProtocolICMP implements BaseProtocol {
     
-    public Packet createPacket(MacAddress srcMAC, InetAddress srcAddr, InetAddress dstAddr, byte ttl) {
+    public Packet createPacket(MacAddress srcMAC, MacAddress dstMAC, InetAddress srcAddr, InetAddress dstAddr, byte ttl) {
         
         Builder unknownb = new Builder();
         unknownb.rawData(new byte[] {(byte) 0, (byte) 1, (byte) 2, (byte) 3});
@@ -65,7 +65,7 @@ public class ProtocolICMP implements BaseProtocol {
 
         EthernetPacket.Builder etherBuilder = new EthernetPacket.Builder();
         etherBuilder
-            .dstAddr(MacAddress.ETHER_BROADCAST_ADDRESS)
+            .dstAddr(dstMAC)
             .srcAddr(srcMAC)
             .type(EtherType.IPV4)
             .payloadBuilder(ipv4b)

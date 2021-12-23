@@ -8,7 +8,7 @@ import org.pcap4j.util.MacAddress;
 
 public interface BaseProtocol {
 
-    public Packet createPacket(MacAddress srcMAC, InetAddress srcAddr, InetAddress dstAddr, byte ttl);
+    public Packet createPacket(MacAddress srcMAC, MacAddress dstMAC, InetAddress srcAddr, InetAddress dstAddr, byte ttl);
     
     public Boolean sendPkt(PcapHandle sendHandle, Packet pkt);
 
