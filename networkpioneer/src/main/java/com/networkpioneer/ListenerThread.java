@@ -1,9 +1,13 @@
 package com.networkpioneer;
 
+import java.io.EOFException;
+import java.util.concurrent.TimeoutException;
+
 import org.pcap4j.core.NotOpenException;
 import org.pcap4j.core.PacketListener;
 import org.pcap4j.core.PcapHandle;
 import org.pcap4j.core.PcapNativeException;
+import org.pcap4j.packet.Packet;
 
 public class ListenerThread implements Runnable {
     private PcapHandle handle;
@@ -17,15 +21,18 @@ public class ListenerThread implements Runnable {
     @Override
     public void run() {
         while (true) {
+            Packet pkt = null;
             try {
-                handle.loop(1, listener);
-            } catch (PcapNativeException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (NotOpenException e) {
-                e.printStackTrace();
-            }        
+                pkt = handle.getNextPacketEx();
+            } catch (TimeoutException e1) {
+                continue;
+            } catch (EOFException | PcapNativeException | NotOpenException e1) {
+                e1.printStackTrace();
+            }
+
+            if (pkt != null) {
+                listener.gotPacket(pkt);
+            }
         }
     }
 

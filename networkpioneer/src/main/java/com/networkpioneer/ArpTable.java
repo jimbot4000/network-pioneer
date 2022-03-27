@@ -31,26 +31,6 @@ public class ArpTable {
     }
 
     public ArrayList<ArpRecord> getTable() {
-        // BufferedReader br = null;
-        // ArrayList<String> result = new ArrayList<String>();
-
-        // try {
-        //     br = new BufferedReader(new FileReader("/proc/net/arp"));
-        //     String line;
-        //     while ((line = br.readLine()) != null) {
-        //         // System.out.println(line);
-        //         result.add(line);
-        //     }
-        // } catch (Exception e) {
-        // } finally {
-        //     try {
-        //         br.close();
-        //     } catch (IOException e) {
-
-        //     }
-        // }
-
-        // return result;
 
         Logger logger = LoggerFactory.getLogger(ArpTable.class);
 
@@ -94,18 +74,6 @@ public class ArpTable {
         return results;
     }
 
-    public static boolean isWindows() {
-        return OS.contains("win");
-    }
- 
-    public static boolean isMac() {
-        return OS.contains("mac");
-    }
- 
-    public static boolean isUnix() {
-        return (OS.contains("nix") || OS.contains("nux") || OS.contains("aix"));
-    }
-
     public ArpRecord parseArpLineUnix(String line) {
 
         StringTokenizer tokenizer = new StringTokenizer(line, " ");
@@ -128,5 +96,16 @@ public class ArpTable {
         return new ArpRecord(ipAddr, macAddr, iface);
     }
 
-    // public MacAddress getMAC
+    public static boolean isWindows() {
+        return OS.contains("win");
+    }
+ 
+    public static boolean isMac() {
+        return OS.contains("mac");
+    }
+ 
+    public static boolean isUnix() {
+        return (OS.contains("nix") || OS.contains("nux") || OS.contains("aix"));
+    }
+
 }

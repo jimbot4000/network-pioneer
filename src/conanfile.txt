@@ -1,0 +1,9 @@
+[requires]
+# You may have multiple lines like the one below, if you have many dependencies.
+libtins/4.3@
+
+[generators]
+cmake
+
+[options]
+libtins:shared=False
